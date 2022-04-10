@@ -1,6 +1,17 @@
 # multi-region-with-apigw-lambda-ddb
 Exemple of building a Multi-region Serverless Application with Amazon API Gateway, AWS Lambda, DynamoDB Global tables, Route53 health-checks and infrastructure as code (CDK).
 
+This is work in progress and currently assumes the DNS domain is `iulianm.dev`.
+
+The stack would create ApiGateway+ACM+Lambda in `us-east-1` and `us-west-2`.
+
+Each region would have the following APIGateway custom domains:
+ * `api.iulianm.dev`
+ * `api.<region>.iulianm.dev`
+
+This guide makes use of [SIGV4A](https://docs.aws.amazon.com/general/latest/gr/signing_aws_api_requests.html) which is an extension that enables signatures that are valid in more than one AWS Region.
+
+
 ![](./out/diagrams/system-context/system-context.png)
 
 # Welcome to your CDK TypeScript project
@@ -64,12 +75,17 @@ def make_call():
     r = requests.get(url, headers=headers)
     return r
 
-print(f'status_code: {r.status_code} \nobject text: {r.text}')
+print(f'status_code: {make_call().status_code} \nobject text: {make_call().text}')
 ```
 
 Output:
 
 ```
+print(f'status_code: {make_call().status_code} \nobject text: {make_call().text}')
+status_code: 200
+object text: {"Region ": "us-west-2"}
+
+print(f'status_code: {make_call().status_code} \nobject text: {make_call().text}')
 status_code: 200
 object text: {"Region ": "us-east-1"}
 ```
