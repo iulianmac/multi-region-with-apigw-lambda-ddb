@@ -1,0 +1,38 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+' uncomment the following line and comment the first to use locally
+' !include C4_Context.puml
+
+'LAYOUT_TOP_DOWN()
+'LAYOUT_AS_SKETCH()
+LAYOUT_WITH_LEGEND()
+
+title System Landscape diagram for Api Gateway Multi Region availability
+
+Person(customer, "Api Customer", "Customer")
+
+System(global_endpoint, "Global Endpoint", "Service global endpoint")
+Rel(customer, global_endpoint, "Make API Calls")
+
+Boundary(c0, "us-west-2") {
+    System(c0_api_gateway, "API Gateway", "Service API Endpoint")
+    System(c0_lambda, "Lambda", "Lambda service")
+    System_Ext(c0_ddb, "DynamoDB", "Database storage.")
+    Rel(c0_api_gateway, c0_lambda, "")
+    Rel(c0_lambda, c0_ddb, "")
+}
+
+Boundary(c1, "us-east-1") {
+    System(c1_api_gateway, "API Gateway", "Service API Endpoint")
+    System(c1_lambda, "Lambda", "Lambda service")
+    System_Ext(c1_ddb, "DynamoDB", "Database storage.")
+    Rel(c1_api_gateway, c1_lambda, "")
+    Rel(c1_lambda, c1_ddb, "")
+}
+Rel_Neighbor(c0_ddb, c1_ddb, "Global Tables")
+
+Rel(global_endpoint, c0_api_gateway, "Health checks")
+Rel(global_endpoint, c1_api_gateway, "Health checks")
+
+
+@enduml

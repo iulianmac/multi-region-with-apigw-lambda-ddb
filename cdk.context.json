@@ -1,0 +1,10 @@
+{
+  "hosted-zone:account=547039824751:domainName=iulianm.dev:region=us-west-2": {
+    "Id": "/hostedzone/Z10393731C0JTNUV2K9E1",
+    "Name": "iulianm.dev."
+  },
+  "hosted-zone:account=547039824751:domainName=iulianm.dev:region=us-east-1": {
+    "Id": "/hostedzone/Z10393731C0JTNUV2K9E1",
+    "Name": "iulianm.dev."
+  }
+}
